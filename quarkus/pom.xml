@@ -104,6 +104,8 @@
       <groupId>com.redhat.openshift.knative.showcase</groupId>
       <artifactId>frontend</artifactId>
       <version>main</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/src/lib/frontend-main.jar</systemPath>
     </dependency>
 
     <dependency>

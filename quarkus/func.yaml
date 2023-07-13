@@ -1,0 +1,29 @@
+specVersion: 0.35.0
+name: showcase
+runtime: quarkus
+registry: quay.io/mvinkler
+image: quay.io/mvinkler/showcase:latest
+imageDigest: sha256:aec13870ff8cbaf91bed9228d12c9bcf98fd7dc7e729deb6a0e8ecb889daf349
+created: 2023-06-29T10:25:10.857723333+02:00
+build:
+  builder: s2i
+  buildEnvs:
+  - name: BP_JVM_VERSION
+    value: "17"
+  - name: BP_NATIVE_IMAGE
+    value: "false"
+  - name: BP_MAVEN_BUILT_ARTIFACT
+    value: func.yaml target/quarkus-app/lib/ target/quarkus-app/*.jar target/quarkus-app/app/
+      target/quarkus-app/quarkus/
+  - name: BP_MAVEN_BUILD_ARGUMENTS
+    value: package -DskipTests=true -Dmaven.javadoc.skip=true -Dquarkus.package.type=fast-jar
+  - name: MAVEN_S2I_ARTIFACT_DIRS
+    value: target/quarkus-app
+  - name: S2I_SOURCE_DEPLOYMENTS_FILTER
+    value: lib quarkus-run.jar app quarkus
+  pvcSize: 256Mi
+deploy:
+  namespace: default
+  healthEndpoints:
+    liveness: /q/health/live
+    readiness: /q/health/ready
